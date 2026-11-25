@@ -1,0 +1,979 @@
+---
+import type { InformacionSala } from "../motor/tipos/ConfiguracionSala";
+
+interface Propiedades {
+	salas: InformacionSala[];
+}
+
+const { salas }: Propiedades = Astro.props;
+---
+
+<div class="inicio">
+	<header class="barra">
+		<a class="marca" href="#inicio" aria-label="Worship World, inicio">
+			<span class="marca__icono" aria-hidden="true">W</span>
+			<span class="marca__texto">WORSHIP <strong>WORLD</strong></span>
+		</a>
+
+		<nav class="navegacion" aria-label="Navegación principal">
+			<a href="#mundo">El mundo</a>
+			<a href="#lugares">Lugares</a>
+			<a href="#proyecto">El proyecto</a>
+		</nav>
+
+		<a class="boton boton--compacto" href="#lugares">
+			Explorar
+			<span aria-hidden="true">↗</span>
+		</a>
+	</header>
+
+	<main>
+		<section class="portada" id="inicio">
+			<div class="portada__texto" id="mundo">
+				<p class="etiqueta">
+					<span class="etiqueta__punto" aria-hidden="true"></span>
+					UN MUNDO SOCIAL INSPIRADO EN TULUÁ
+				</p>
+				<h1>
+					Tu ciudad.<br />
+					<span>Tu mundo.</span>
+				</h1>
+				<p class="portada__descripcion">
+					Un lugar para encontrarse, recorrer las calles y hacer de cada
+					esquina una historia. Bienvenido a WORSHIP WORLD.
+				</p>
+				<div class="portada__acciones">
+					<a class="boton" href="#lugares">
+						Conocer los lugares
+						<span aria-hidden="true">→</span>
+					</a>
+					<a class="enlace" href="#proyecto">Descubre el proyecto</a>
+				</div>
+				<div class="resumen" aria-label="Resumen del mundo">
+					<div class="resumen__dato">
+						<strong>{salas.length.toString().padStart(2, "0")}</strong>
+						<span>lugares creados</span>
+					</div>
+					<span class="resumen__separador" aria-hidden="true"></span>
+					<div class="resumen__dato">
+						<strong>TULUÁ</strong>
+						<span>Valle del Cauca</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="portada__ilustracion" aria-label="Ilustración de una calle de Tuluá" role="img">
+				<div class="ilustracion__etiqueta">
+					<span aria-hidden="true">✦</span>
+					Una ciudad para compartir
+				</div>
+				<svg
+					class="ciudad"
+					viewBox="0 0 720 510"
+					role="presentation"
+					xmlns="http://www.w3.org/2000/svg"
+				>
+					<defs>
+						<linearGradient id="cielo" x1="0" x2="1" y1="0" y2="1">
+							<stop offset="0" stop-color="#d9ece4" />
+							<stop offset="1" stop-color="#f8e6c6" />
+						</linearGradient>
+					</defs>
+					<rect width="720" height="510" rx="28" fill="url(#cielo)" />
+					<circle cx="570" cy="104" r="48" fill="#f6c867" />
+					<path d="M0 302c99-50 180-46 275-7s177 28 265-14 119-42 180-9v238H0V302Z" fill="#a9c7a2" />
+					<path d="M0 350c124-35 232-22 327 8s216 4 393-42v194H0V350Z" fill="#7fa58d" />
+					<path d="M0 404h720v106H0z" fill="#e2c89d" />
+					<path d="M0 430h720v80H0z" fill="#c6a77b" />
+					<path d="M0 467h720" stroke="#f1dfbf" stroke-dasharray="27 23" stroke-width="5" />
+					<g>
+						<path d="M71 196h175v209H71z" fill="#e88e6c" />
+						<path d="M57 192h203v25H57z" fill="#bd6657" />
+						<path d="M86 236h49v64H86zM154 236h49v64h-49z" fill="#f8d49a" />
+						<path d="M83 229h55v9H83zM151 229h55v9h-55z" fill="#f6b866" />
+						<path d="M137 332h46v73h-46z" fill="#824f4b" />
+						<path d="M60 311h197v14H60z" fill="#f4c078" />
+						<path d="M89 337h37v35H89zM194 337h37v35h-37z" fill="#f8d49a" />
+					</g>
+					<g>
+						<path d="M283 238h162v167H283z" fill="#f4d293" />
+						<path d="M268 232h192v22H268z" fill="#628b79" />
+						<path d="M302 271h44v55h-44zM382 271h44v55h-44z" fill="#a4c6b3" />
+						<path d="M302 271h44v8h-44zM382 271h44v8h-44z" fill="#fff0cf" />
+						<path d="M338 337h50v68h-50z" fill="#ab6e55" />
+						<path d="M292 345h35v28h-35zM400 345h35v28h-35z" fill="#d18d65" />
+					</g>
+					<g>
+						<path d="M493 217h146v188H493z" fill="#e9b879" />
+						<path d="M480 210h171v24H480z" fill="#bd715a" />
+						<path d="M511 254h42v52h-42zM579 254h42v52h-42z" fill="#d4e4cb" />
+						<path d="M511 254h42v8h-42zM579 254h42v8h-42z" fill="#fff0cf" />
+						<path d="M540 332h52v73h-52z" fill="#806052" />
+						<path d="M491 312h148v13H491z" fill="#e78b65" />
+					</g>
+					<g fill="#416f5a">
+						<circle cx="52" cy="316" r="30" />
+						<circle cx="48" cy="280" r="27" />
+						<circle cx="83" cy="292" r="24" />
+						<circle cx="665" cy="310" r="35" />
+						<circle cx="655" cy="272" r="28" />
+						<circle cx="688" cy="285" r="24" />
+					</g>
+					<g fill="#ad7552">
+						<path d="M44 310h13v55H44z" />
+						<path d="M658 304h14v61h-14z" />
+					</g>
+					<g>
+						<path d="M224 372h66l-11 38h-45z" fill="#f3c86a" />
+						<path d="M232 370c4-17 15-26 27-26s23 9 27 26" fill="#e98262" />
+						<path d="M247 347v-18h22v18" fill="#5f8276" />
+					</g>
+					<g fill="#fffaf0">
+						<path d="M109 116c0-12 10-22 22-22 8 0 15 4 19 11 3-2 7-4 12-4 13 0 23 10 23 23h-76v-8Z" />
+						<path d="M404 136c0-9 7-16 16-16 6 0 11 3 14 8 2-2 5-3 9-3 9 0 17 7 17 17h-56v-6Z" />
+					</g>
+				</svg>
+				<div class="ilustracion__nota">
+					<span class="ilustracion__nota-icono" aria-hidden="true">⌂</span>
+					<div>
+						<strong>La avenida principal</strong>
+						<span>El comienzo de todo</span>
+					</div>
+					<span class="ilustracion__nota-flecha" aria-hidden="true">↗</span>
+				</div>
+			</div>
+		</section>
+
+		<section class="lugares" id="lugares">
+			<div class="seccion__encabezado">
+				<div>
+					<p class="etiqueta">EMPIEZA A RECORRER</p>
+					<h2>Hay espacio para todos.</h2>
+				</div>
+				<p class="seccion__descripcion">
+					Cada sala es un punto de encuentro distinto. Estos son los primeros
+					lugares de nuestro mundo.
+				</p>
+			</div>
+
+			<div class="tarjetas">
+				{salas.map((sala) => (
+					<article class={`tarjeta tarjeta--${sala.tipo}`}>
+						<div class="tarjeta__icono" aria-hidden="true">
+							{sala.tipo === "calle" ? "↗" : "✳"}
+						</div>
+						<div class="tarjeta__contenido">
+							<p class="tarjeta__tipo">
+								{sala.tipo === "calle"
+									? "ESPACIO PÚBLICO"
+									: `TIENDA · ${sala.categoria ?? "COMERCIO"}`}
+							</p>
+							<h3>{sala.nombre}</h3>
+							<p class="tarjeta__detalle">
+								{`${sala.ancho} × ${sala.profundidad} espacios`}
+								<span aria-hidden="true">·</span>
+								{sala.jugadores} visitantes
+							</p>
+						</div>
+						<span class="tarjeta__flecha" aria-hidden="true">↗</span>
+					</article>
+				))}
+			</div>
+		</section>
+
+		<section class="proyecto" id="proyecto">
+			<div class="proyecto__marca" aria-hidden="true">
+				<span>W</span>
+				<i></i>
+				<i></i>
+				<i></i>
+			</div>
+			<div class="proyecto__texto">
+				<p class="etiqueta">HECHO CON CARIÑO EN EL VALLE</p>
+				<h2>Una ciudad para vivirla a tu manera.</h2>
+				<p>
+					WORSHIP WORLD está en construcción. Estamos preparando sus espacios
+					para que pronto puedas recorrer Tuluá, encontrarte con otras personas
+					y crear nuevas historias.
+				</p>
+			</div>
+			<a class="boton boton--claro" href="#inicio">
+				Volver al inicio
+				<span aria-hidden="true">↑</span>
+			</a>
+		</section>
+	</main>
+
+	<footer class="pie">
+		<a class="marca marca--pie" href="#inicio">
+			<span class="marca__icono" aria-hidden="true">W</span>
+			<span class="marca__texto">WORSHIP <strong>WORLD</strong></span>
+		</a>
+		<p>Un mundo social inspirado en Tuluá, Valle del Cauca.</p>
+		<span class="pie__estado"><i></i> En construcción</span>
+	</footer>
+</div>
+
+<style>
+	.inicio {
+		--tinta: #203533;
+		--verde: #315a4b;
+		--verde-claro: #e1ece3;
+		--naranja: #e98262;
+		--amarillo: #f3c86a;
+		--papel: #f5f2e9;
+		--muted: #78827a;
+		max-width: 1440px;
+		margin: 0 auto;
+		padding: 0 7.2%;
+		overflow: hidden;
+	}
+
+	.barra {
+		min-height: 88px;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		border-bottom: 1px solid rgba(32, 53, 51, 0.1);
+	}
+
+	.marca {
+		display: inline-flex;
+		align-items: center;
+		gap: 10px;
+		color: var(--tinta);
+		text-decoration: none;
+	}
+
+	.marca__icono {
+		width: 35px;
+		height: 35px;
+		display: grid;
+		place-items: center;
+		border-radius: 11px;
+		background: var(--verde);
+		color: var(--amarillo);
+		font-size: 19px;
+		font-weight: 900;
+		transform: rotate(-4deg);
+	}
+
+	.marca__texto {
+		font-size: 14px;
+		font-weight: 800;
+		letter-spacing: 0.09em;
+	}
+
+	.marca__texto strong {
+		color: var(--verde);
+	}
+
+	.navegacion {
+		display: flex;
+		gap: clamp(24px, 4vw, 58px);
+	}
+
+	.navegacion a,
+	.enlace {
+		color: #55645c;
+		font-size: 13px;
+		font-weight: 700;
+		text-decoration: none;
+		transition: color 160ms ease;
+	}
+
+	.navegacion a:hover,
+	.enlace:hover {
+		color: var(--naranja);
+	}
+
+	.boton {
+		min-height: 52px;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 17px;
+		padding: 0 23px;
+		border: 0;
+		border-radius: 10px;
+		background: var(--verde);
+		box-shadow: 0 7px 15px rgba(49, 90, 75, 0.14);
+		color: #fffdf6;
+		font-size: 13px;
+		font-weight: 800;
+		text-decoration: none;
+		transition:
+			transform 160ms ease,
+			background 160ms ease;
+	}
+
+	.boton:hover {
+		transform: translateY(-2px);
+		background: #254638;
+	}
+
+	.boton span {
+		font-size: 18px;
+	}
+
+	.boton--compacto {
+		min-height: 42px;
+		padding: 0 17px;
+		font-size: 12px;
+	}
+
+	.portada {
+		min-height: 635px;
+		display: grid;
+		grid-template-columns: minmax(0, 0.92fr) minmax(390px, 1.08fr);
+		align-items: center;
+		gap: 4.6%;
+		padding: 65px 0 75px;
+	}
+
+	.portada__texto {
+		padding: 12px 0;
+	}
+
+	.etiqueta {
+		margin: 0 0 22px;
+		color: var(--verde);
+		font-size: 10px;
+		font-weight: 900;
+		letter-spacing: 0.16em;
+	}
+
+	.etiqueta__punto {
+		width: 8px;
+		height: 8px;
+		display: inline-block;
+		margin-right: 7px;
+		border-radius: 50%;
+		background: var(--naranja);
+		box-shadow: 0 0 0 4px rgba(233, 130, 98, 0.14);
+	}
+
+	h1,
+	h2,
+	h3,
+	p {
+		margin-top: 0;
+	}
+
+	h1 {
+		margin-bottom: 23px;
+		color: var(--tinta);
+		font-size: clamp(54px, 6.5vw, 88px);
+		font-weight: 900;
+		letter-spacing: -0.075em;
+		line-height: 0.99;
+	}
+
+	h1 span {
+		color: var(--naranja);
+	}
+
+	.portada__descripcion {
+		max-width: 440px;
+		margin-bottom: 29px;
+		color: #68756e;
+		font-size: 16px;
+		line-height: 1.75;
+	}
+
+	.portada__acciones {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 25px;
+	}
+
+	.portada__acciones .enlace {
+		font-size: 12px;
+	}
+
+	.resumen {
+		display: flex;
+		align-items: center;
+		gap: 25px;
+		margin-top: 43px;
+	}
+
+	.resumen__dato {
+		display: grid;
+		gap: 5px;
+	}
+
+	.resumen__dato strong {
+		color: var(--tinta);
+		font-size: 16px;
+		font-weight: 900;
+		letter-spacing: 0.03em;
+	}
+
+	.resumen__dato span {
+		color: var(--muted);
+		font-size: 11px;
+	}
+
+	.resumen__separador {
+		width: 1px;
+		height: 34px;
+		background: rgba(32, 53, 51, 0.16);
+	}
+
+	.portada__ilustracion {
+		position: relative;
+		padding: 22px 0 40px;
+	}
+
+	.ciudad {
+		width: 100%;
+		display: block;
+		border: 9px solid rgba(255, 252, 241, 0.8);
+		border-radius: 35px;
+		box-shadow: 0 27px 60px rgba(57, 78, 64, 0.17);
+	}
+
+	.ilustracion__etiqueta {
+		position: absolute;
+		z-index: 1;
+		top: 0;
+		right: 20px;
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		padding: 12px 16px;
+		border: 1px solid rgba(32, 53, 51, 0.08);
+		border-radius: 99px;
+		background: #fffdf6;
+		box-shadow: 0 8px 18px rgba(32, 53, 51, 0.08);
+		color: var(--tinta);
+		font-size: 10px;
+		font-weight: 800;
+	}
+
+	.ilustracion__etiqueta span {
+		color: var(--naranja);
+		font-size: 15px;
+	}
+
+	.ilustracion__nota {
+		position: absolute;
+		right: -16px;
+		bottom: 0;
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		padding: 14px 17px;
+		border: 1px solid rgba(32, 53, 51, 0.07);
+		border-radius: 14px;
+		background: #fffdf6;
+		box-shadow: 0 14px 28px rgba(32, 53, 51, 0.12);
+	}
+
+	.ilustracion__nota-icono {
+		width: 36px;
+		height: 36px;
+		display: grid;
+		place-items: center;
+		border-radius: 11px;
+		background: #fce9d7;
+		color: var(--naranja);
+		font-size: 23px;
+		font-weight: 900;
+	}
+
+	.ilustracion__nota div {
+		display: grid;
+		gap: 4px;
+	}
+
+	.ilustracion__nota strong {
+		color: var(--tinta);
+		font-size: 11px;
+	}
+
+	.ilustracion__nota div span {
+		color: var(--muted);
+		font-size: 10px;
+	}
+
+	.ilustracion__nota-flecha {
+		margin-left: 9px;
+		color: var(--verde);
+		font-size: 17px;
+	}
+
+	.lugares {
+		padding: 70px 0 83px;
+		border-top: 1px solid rgba(32, 53, 51, 0.1);
+	}
+
+	.seccion__encabezado {
+		display: flex;
+		align-items: end;
+		justify-content: space-between;
+		gap: 35px;
+		margin-bottom: 30px;
+	}
+
+	.seccion__encabezado .etiqueta {
+		margin-bottom: 12px;
+	}
+
+	h2 {
+		margin-bottom: 0;
+		color: var(--tinta);
+		font-size: clamp(29px, 3.4vw, 43px);
+		font-weight: 900;
+		letter-spacing: -0.055em;
+		line-height: 1.1;
+	}
+
+	.seccion__descripcion {
+		max-width: 335px;
+		margin-bottom: 3px;
+		color: #738078;
+		font-size: 13px;
+		line-height: 1.7;
+	}
+
+	.tarjetas {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 16px;
+	}
+
+	.tarjeta {
+		min-height: 116px;
+		display: flex;
+		align-items: center;
+		gap: 19px;
+		padding: 20px 22px;
+		border: 1px solid rgba(32, 53, 51, 0.08);
+		border-radius: 16px;
+		background: rgba(255, 253, 246, 0.83);
+		transition:
+			transform 160ms ease,
+			box-shadow 160ms ease;
+	}
+
+	.tarjeta:hover {
+		transform: translateY(-3px);
+		box-shadow: 0 14px 30px rgba(32, 53, 51, 0.09);
+	}
+
+	.tarjeta__icono {
+		width: 54px;
+		height: 54px;
+		flex: 0 0 auto;
+		display: grid;
+		place-items: center;
+		border-radius: 15px;
+		background: #e4eee2;
+		color: var(--verde);
+		font-size: 24px;
+		font-weight: 900;
+	}
+
+	.tarjeta--tienda .tarjeta__icono {
+		background: #fce9d7;
+		color: var(--naranja);
+	}
+
+	.tarjeta__contenido {
+		min-width: 0;
+	}
+
+	.tarjeta__tipo {
+		margin-bottom: 6px;
+		color: var(--verde);
+		font-size: 9px;
+		font-weight: 900;
+		letter-spacing: 0.12em;
+	}
+
+	.tarjeta--tienda .tarjeta__tipo {
+		color: #bc704f;
+	}
+
+	.tarjeta h3 {
+		margin-bottom: 6px;
+		overflow: hidden;
+		color: var(--tinta);
+		font-size: 17px;
+		font-weight: 900;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.tarjeta__detalle {
+		margin-bottom: 0;
+		color: var(--muted);
+		font-size: 11px;
+	}
+
+	.tarjeta__detalle span {
+		padding: 0 5px;
+		color: var(--naranja);
+	}
+
+	.tarjeta__flecha {
+		margin-left: auto;
+		color: #91a298;
+		font-size: 19px;
+	}
+
+	.proyecto {
+		display: flex;
+		align-items: center;
+		gap: 26px;
+		padding: 39px 43px;
+		border-radius: 22px;
+		background: var(--verde);
+		color: #f8f4e9;
+	}
+
+	.proyecto__marca {
+		width: 76px;
+		height: 76px;
+		flex: 0 0 auto;
+		display: grid;
+		place-items: center;
+		border: 1px solid rgba(255, 255, 255, 0.2);
+		border-radius: 22px;
+		background: rgba(255, 255, 255, 0.08);
+		color: var(--amarillo);
+		font-size: 34px;
+		font-weight: 900;
+		transform: rotate(-4deg);
+	}
+
+	.proyecto__marca i {
+		width: 5px;
+		height: 5px;
+		position: absolute;
+		border-radius: 50%;
+		background: var(--naranja);
+		transform: translate(25px, -24px);
+	}
+
+	.proyecto__marca i:nth-of-type(2) {
+		transform: translate(31px, -15px);
+		background: var(--amarillo);
+	}
+
+	.proyecto__marca i:nth-of-type(3) {
+		transform: translate(35px, -5px);
+		background: #a7c7a6;
+	}
+
+	.proyecto__texto {
+		flex: 1;
+	}
+
+	.proyecto__texto .etiqueta {
+		margin-bottom: 10px;
+		color: #d3e2d4;
+	}
+
+	.proyecto h2 {
+		margin-bottom: 9px;
+		color: #fffdf6;
+		font-size: clamp(23px, 3vw, 34px);
+	}
+
+	.proyecto__texto > p:last-child {
+		max-width: 630px;
+		margin-bottom: 0;
+		color: #d5e0d7;
+		font-size: 12px;
+		line-height: 1.7;
+	}
+
+	.boton--claro {
+		flex: 0 0 auto;
+		background: #fffdf6;
+		box-shadow: none;
+		color: var(--verde);
+	}
+
+	.boton--claro:hover {
+		background: var(--amarillo);
+		color: var(--tinta);
+	}
+
+	.pie {
+		min-height: 105px;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 20px;
+	}
+
+	.marca--pie .marca__icono {
+		width: 30px;
+		height: 30px;
+		border-radius: 9px;
+		font-size: 16px;
+	}
+
+	.marca--pie .marca__texto {
+		font-size: 11px;
+	}
+
+	.pie > p {
+		margin: 0;
+		color: var(--muted);
+		font-size: 11px;
+	}
+
+	.pie__estado {
+		display: inline-flex;
+		align-items: center;
+		gap: 7px;
+		color: #68756e;
+		font-size: 10px;
+	}
+
+	.pie__estado i {
+		width: 7px;
+		height: 7px;
+		border-radius: 50%;
+		background: #e5a84f;
+	}
+
+	@media (max-width: 900px) {
+		.inicio {
+			padding: 0 5%;
+		}
+
+		.portada {
+			min-height: auto;
+			grid-template-columns: minmax(0, 1fr) minmax(320px, 0.9fr);
+			gap: 3%;
+			padding: 68px 0 75px;
+		}
+
+		h1 {
+			font-size: clamp(51px, 7vw, 72px);
+		}
+
+		.portada__descripcion {
+			font-size: 14px;
+		}
+
+		.navegacion {
+			gap: 23px;
+		}
+
+		.proyecto {
+			gap: 20px;
+			padding: 30px;
+		}
+
+		.proyecto__marca {
+			width: 60px;
+			height: 60px;
+			border-radius: 18px;
+			font-size: 28px;
+		}
+	}
+
+	@media (max-width: 680px) {
+		.inicio {
+			padding: 0 21px;
+		}
+
+		.barra {
+			min-height: 72px;
+		}
+
+		.marca {
+			gap: 7px;
+		}
+
+		.marca__icono {
+			width: 31px;
+			height: 31px;
+			border-radius: 9px;
+			font-size: 17px;
+		}
+
+		.marca__texto {
+			font-size: 11px;
+		}
+
+		.navegacion {
+			display: none;
+		}
+
+		.boton--compacto {
+			min-height: 37px;
+			padding: 0 12px;
+			font-size: 11px;
+		}
+
+		.portada {
+			grid-template-columns: 1fr;
+			gap: 36px;
+			padding: 58px 0 57px;
+		}
+
+		.portada__texto {
+			padding: 0;
+		}
+
+		.etiqueta {
+			font-size: 9px;
+		}
+
+		h1 {
+			margin-bottom: 18px;
+			font-size: clamp(55px, 15vw, 78px);
+		}
+
+		.portada__descripcion {
+			max-width: 430px;
+			font-size: 14px;
+		}
+
+		.portada__acciones {
+			gap: 18px;
+		}
+
+		.portada__acciones .boton {
+			min-height: 47px;
+			padding: 0 17px;
+		}
+
+		.resumen {
+			margin-top: 31px;
+		}
+
+		.portada__ilustracion {
+			padding: 18px 0 32px;
+		}
+
+		.ciudad {
+			border-width: 6px;
+			border-radius: 23px;
+		}
+
+		.ilustracion__etiqueta {
+			right: 10px;
+			padding: 9px 12px;
+			font-size: 9px;
+		}
+
+		.ilustracion__nota {
+			right: -5px;
+			padding: 10px 12px;
+		}
+
+		.ilustracion__nota-icono {
+			width: 31px;
+			height: 31px;
+			font-size: 19px;
+		}
+
+		.ilustracion__nota strong {
+			font-size: 10px;
+		}
+
+		.ilustracion__nota div span {
+			font-size: 9px;
+		}
+
+		.lugares {
+			padding: 56px 0 62px;
+		}
+
+		.seccion__encabezado {
+			display: block;
+			margin-bottom: 23px;
+		}
+
+		.seccion__descripcion {
+			margin-top: 13px;
+			font-size: 12px;
+		}
+
+		.tarjetas {
+			grid-template-columns: 1fr;
+			gap: 11px;
+		}
+
+		.tarjeta {
+			min-height: 100px;
+			gap: 14px;
+			padding: 15px;
+		}
+
+		.tarjeta__icono {
+			width: 46px;
+			height: 46px;
+			border-radius: 13px;
+		}
+
+		.tarjeta h3 {
+			font-size: 15px;
+		}
+
+		.proyecto {
+			align-items: flex-start;
+			flex-wrap: wrap;
+			gap: 15px;
+			padding: 25px 22px;
+			border-radius: 18px;
+		}
+
+		.proyecto__marca {
+			width: 48px;
+			height: 48px;
+			border-radius: 14px;
+			font-size: 24px;
+		}
+
+		.proyecto__texto {
+			flex-basis: calc(100% - 65px);
+		}
+
+		.proyecto__texto .etiqueta {
+			font-size: 8px;
+		}
+
+		.proyecto h2 {
+			font-size: 24px;
+		}
+
+		.proyecto__texto > p:last-child {
+			font-size: 11px;
+		}
+
+		.boton--claro {
+			margin-left: 63px;
+		}
+
+		.pie {
+			min-height: 125px;
+			flex-wrap: wrap;
+			justify-content: space-between;
+			gap: 8px;
+			padding: 22px 0;
+		}
+
+		.pie > p {
+			order: 1;
+			flex-basis: 100%;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		* {
+			scroll-behavior: auto !important;
+			transition-duration: 0.01ms !important;
+		}
+	}
+</style>

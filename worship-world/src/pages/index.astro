@@ -1,0 +1,28 @@
+---
+import Layout from "../layouts/Layout.astro";
+import MenuInicio from "../interfaz/MenuInicio.astro";
+import { Mundo } from "../motor/nucleo/Mundo";
+
+const mundo = new Mundo("WORSHIP WORLD");
+
+mundo.crearSala({
+	nombre: "Avenida principal",
+	tipo: "calle",
+	ancho: 20,
+	profundidad: 15,
+});
+
+mundo.crearSala({
+	nombre: "Tienda de ropa",
+	tipo: "tienda",
+	ancho: 10,
+	profundidad: 8,
+	categoria: "ropa",
+});
+
+const salas = mundo.listarSalas().map((sala) => sala.obtenerInformacion());
+---
+
+<Layout>
+	<MenuInicio salas={salas} />
+</Layout>
