@@ -1,8 +1,10 @@
 import type { InformacionSala, TipoSala } from "../tipos/ConfiguracionSala";
+import { EscenarioSala } from "../espacial/EscenarioSala";
 
 export abstract class Sala<TJugador = unknown, TElemento = unknown> {
 	private readonly _jugadores: TJugador[] = [];
 	private readonly _elementos: TElemento[] = [];
+	private escenarioSala: EscenarioSala | undefined;
 	private inicializada = false;
 
 	protected constructor(
@@ -21,13 +23,30 @@ export abstract class Sala<TJugador = unknown, TElemento = unknown> {
 		return [...this._elementos];
 	}
 
+	public obtenerEscenario(): EscenarioSala {
+		if (!this.escenarioSala) {
+			throw new Error(`El escenario de la sala "${this.nombre}" no está inicializado.`);
+		}
+
+		return this.escenarioSala;
+	}
+
 	public inicializar(): void {
 		if (this.inicializada) {
 			return;
 		}
 
+		const distribucion = this.tipo === "calle" ? "cruz" : "rectangular";
+		const escenario = new EscenarioSala(
+			this.ancho,
+			this.profundidad,
+			distribucion,
+		);
+		escenario.inicializar();
+
 		this._jugadores.length = 0;
 		this._elementos.length = 0;
+		this.escenarioSala = escenario;
 		this.inicializada = true;
 	}
 
@@ -58,6 +77,9 @@ export abstract class Sala<TJugador = unknown, TElemento = unknown> {
 			tipo: this.tipo,
 			jugadores: this._jugadores.length,
 			elementos: this._elementos.length,
+			...(this.escenarioSala
+				? { escenario: this.escenarioSala.obtenerInformacionEscenario() }
+				: {}),
 		};
 	}
 

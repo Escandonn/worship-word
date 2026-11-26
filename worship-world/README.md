@@ -9,10 +9,14 @@ mantiene independiente de la interfaz.
 ```text
 src/
 ├── interfaz/
+│   ├── EscenaSala.ts
+│   ├── Juego.astro
 │   └── MenuInicio.astro
 ├── motor/
 │   ├── ejemplos/
+│   ├── espacial/
 │   ├── nucleo/
+│   ├── representacion/
 │   ├── salas/
 │   └── tipos/
 ├── layouts/
@@ -20,9 +24,19 @@ src/
     └── index.astro
 ```
 
-`src/pages/index.astro` prepara un mundo de demostración y entrega su
-información al menú. `src/motor/` contiene las clases para administrar salas;
-`src/interfaz/` se encarga de representarlas en la página.
+`src/pages/index.astro` prepara un mundo de demostración y serializa las salas
+registradas para la interfaz. `Juego.astro` crea botones desde ese registro y
+mantiene una única instancia de Phaser mientras cambia la sala representada.
+`src/motor/` contiene el modelo espacial y `src/interfaz/` integra la escena
+Phaser con Astro. La lógica de las salas no depende de Phaser.
+
+Las calles usan un escenario en cruz con calzada, aceras y exterior; las tiendas
+conservan el suelo rectangular y sus paredes.
+
+La documentación de arquitectura y los diagramas de las fases implementadas se
+encuentran en [`documentacion/`](./documentacion/README.md). La verificación
+ejecutable del sistema espacial está en
+`src/motor/ejemplos/verificarEstructuraEspacial.ts`.
 
 ## Comandos
 

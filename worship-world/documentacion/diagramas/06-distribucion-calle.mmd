@@ -1,0 +1,23 @@
+flowchart TD
+	Inicializar["Sala.inicializar()"] --> Cruz["EscenarioSala(distribucion = cruz)"]
+	Cruz --> Clasificar["Clasificar cada celda de Suelo"]
+	Clasificar --> Interseccion{"¿Pertenece a ambos brazos?"}
+	Interseccion -->|"sí"| Calzada["Calzada del cruce"]
+	Interseccion -->|"no"| Brazo{"¿Pertenece a un brazo?"}
+	Brazo -->|"centro del brazo"| Calzada
+	Brazo -->|"borde del brazo"| Acera["Acera"]
+	Brazo -->|"ninguno"| Exterior["Exterior"]
+	Calzada --> Salidas["Brazos abiertos: norte, sur, este y oeste"]
+	Acera --> Salidas
+	Exterior --> Salidas
+	Salidas --> SinParedes["No generar paredes perimetrales"]
+	Calzada --> Renderizador["RepresentadorSala dibuja colores y marcas viales"]
+	Acera --> Renderizador
+	Exterior --> Renderizador
+	Renderizador --> Cuadricula["CuadriculaIsometrica convierte posiciones"]
+	Renderizador --> Phaser["Phaser.Graphics"]
+
+	classDef modelo fill:#dcebe1,stroke:#315a4b,color:#203533
+	classDef visual fill:#fff0d4,stroke:#bd8a42,color:#332a1b
+	class Cruz,Clasificar,Interseccion,Brazo,Salidas,SinParedes modelo
+	class Calzada,Acera,Exterior,Renderizador,Cuadricula,Phaser visual

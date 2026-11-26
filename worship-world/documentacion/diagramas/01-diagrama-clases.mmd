@@ -1,0 +1,154 @@
+classDiagram
+	direction TB
+
+	class Mundo {
+		-salasRegistradas: Map~string, Sala~
+		+nombre: string
+		+salas: readonly Sala[]
+		+Mundo(nombre)
+		+crearSala(configuracion) Sala
+		+obtenerSala(id) Sala | undefined
+		+eliminarSala(id) boolean
+		+listarSalas() Sala[]
+		-validarConfiguracion(configuracion)
+		-generarIdentificador() string
+	}
+	note for Mundo "El contador de identificadores es una variable de módulo."
+
+	class Sala {
+		<<abstract>>
+		-_jugadores: TJugador[]
+		-_elementos: TElemento[]
+		-escenarioSala: EscenarioSala | undefined
+		-inicializada: boolean
+		+id: string
+		+nombre: string
+		+ancho: number
+		+profundidad: number
+		+tipo: TipoSala
+		+jugadores: readonly TJugador[]
+		+elementos: readonly TElemento[]
+		#Sala(id, nombre, ancho, profundidad, tipo)
+		+inicializar() void
+		+obtenerEscenario() EscenarioSala
+		+agregarJugador(jugador) void
+		+eliminarJugador(jugador) boolean
+		+agregarElemento(elemento) void
+		+eliminarElemento(elemento) boolean
+		+obtenerInformacion() InformacionSala
+	}
+
+	class SalaCalle {
+		+SalaCalle(id, nombre, ancho, profundidad)
+	}
+	class SalaTienda {
+		+categoria: CategoriaTienda
+		+SalaTienda(id, nombre, ancho, profundidad, categoria)
+		+obtenerInformacion() InformacionSala
+	}
+
+	class EscenarioSala {
+		+ancho: number
+		+profundidad: number
+		+distribucion: TipoDistribucionEscenario
+		+cuadricula: CuadriculaIsometrica
+		+suelo: Suelo
+		-paredesInternas: Pared[]
+		-inicializado: boolean
+		+paredes: readonly Pared[]
+		+EscenarioSala(ancho, profundidad, distribucion)
+		+inicializar() void
+		+generarEscenario() void
+		+obtenerInformacionEscenario() InformacionEscenario
+	}
+
+	class CuadriculaIsometrica {
+		+anchoBaldosa: number
+		+altoBaldosa: number
+		+origenX: number
+		+origenY: number
+		+CuadriculaIsometrica(anchoBaldosa, altoBaldosa, origenX, origenY)
+		+convertirAPantalla(posicion) CoordenadaPantalla
+		+convertirACuadricula(posicion) CoordenadaCuadricula
+		+obtenerPosicionBaldosa(posicionX, posicionY) CoordenadaPantalla
+	}
+
+	class Suelo {
+		+ancho: number
+		+profundidad: number
+		-baldosas: Map~string, Baldosa~
+		+Suelo(ancho, profundidad)
+		+generarBaldosas(obtenerTipoBaldosa?) void
+		+obtenerBaldosa(posicionX, posicionY) Baldosa | undefined
+		+agregarBaldosa(baldosa) void
+		+eliminarBaldosa(posicionX, posicionY) boolean
+		+obtenerTodasLasBaldosas() Baldosa[]
+	}
+
+	class Baldosa {
+		+identificador: string
+		+posicionX: number
+		+posicionY: number
+		+tipo: TipoBaldosa
+		-transitableInterna: boolean
+		+transitable: boolean
+		+Baldosa(identificador, posicionX, posicionY, tipo, transitable)
+		+obtenerPosicion() CoordenadaCuadricula
+		+establecerTransitable(transitable) void
+	}
+
+	class Pared {
+		+posicion: CoordenadaCuadricula
+		+longitud: number
+		+altura: number
+		+orientacion: OrientacionPared
+		+Pared(posicion, longitud, altura, orientacion)
+	}
+
+	class PhaserScene {
+		<<Phaser.Scene>>
+	}
+
+	class EscenaSala {
+		-representador: RepresentadorSala | undefined
+		-sala: Sala
+		+EscenaSala(sala)
+		+create() void
+		+cambiarSala(sala) void
+		-ajustarCamara() void
+		-representarSala() void
+		-limpiarRepresentador() void
+	}
+
+	class RepresentadorSala {
+		-escena: Phaser.Scene
+		-escenario: EscenarioSala
+		-graficos: Phaser.GameObjects.Graphics
+		-destruido: boolean
+		+RepresentadorSala(escena, escenario)
+		+dibujar() void
+		+limpiar() void
+		+destruir() void
+		-dibujarSuelo(desplazamiento) void
+		-dibujarDemarcacion(desplazamiento) void
+		-dibujarPared(pared, desplazamiento) void
+		-obtenerColorBaldosa(tipo, posicionX, posicionY) number
+		-obtenerExtremosPared(pared) VerticesPared
+		-obtenerDesplazamiento() CoordenadaPantalla
+		-crearPuntos(coordenadas, desplazamiento) Phaser.Math.Vector2[]
+		-asegurarActivo() void
+	}
+
+	PhaserScene <|-- EscenaSala
+	Mundo "1" o-- "0..*" Sala : registra
+	Sala <|-- SalaCalle
+	Sala <|-- SalaTienda
+	Sala "1" *-- "0..1" EscenarioSala : inicializa
+	EscenarioSala "1" *-- "1" CuadriculaIsometrica : crea
+	EscenarioSala "1" *-- "1" Suelo : compone
+	EscenarioSala "1" *-- "0..4" Pared : genera para distribución rectangular
+	Suelo "1" *-- "0..*" Baldosa : administra
+	EscenaSala "1" *-- "1" RepresentadorSala : crea al iniciar
+	EscenaSala --> Sala : consulta
+	RepresentadorSala --> EscenarioSala : representa
+	RepresentadorSala --> PhaserScene : usa Graphics

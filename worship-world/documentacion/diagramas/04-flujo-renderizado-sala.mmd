@@ -1,0 +1,22 @@
+flowchart TD
+	Pagina["src/pages/index.astro crea y registra salas"] --> Configuracion["Serializa configuraciones"]
+	Configuracion --> Astro["Juego.astro recibe configuraciones"]
+	Astro --> Cliente["Script cliente evita montar dos veces"]
+	Cliente --> MundoCliente["Reconstruye Mundo con crearSala()"]
+	MundoCliente --> Navegacion["Crea un botón por cada sala listada"]
+	MundoCliente --> Phaser["Crea una única instancia Phaser.Game"]
+	Phaser --> Escena["EscenaSala recibe sala inicial"]
+	Navegacion --> Seleccion["Botón seleccionado"]
+	Seleccion --> Cambio["EscenaSala.cambiarSala(sala)"]
+	Cambio --> Reemplazar["Destruye el renderizador anterior"]
+	Reemplazar --> Renderizador["RepresentadorSala dibuja el nuevo escenario"]
+	Escena --> Renderizador
+	Renderizador --> Datos["Consulta EscenarioSala"]
+	Datos --> Clasificar{"Distribución"}
+	Clasificar -->|"cruz"| Vias["Dibuja calzada, acera, exterior y marcas"]
+	Clasificar -->|"rectangular"| Paredes["Dibuja paredes y suelo"]
+	Vias --> Camara["Centra cámara y ajusta zoom"]
+	Paredes --> Camara
+	Resize["Viewport cambia de tamaño"] -->|"Phaser.Scale.RESIZE"| Camara
+	Salida["astro:before-swap o pagehide"] --> Destruir["Phaser.Game.destroy(true)"]
+	Destruir --> Limpiar["Escena destruye Graphics"]

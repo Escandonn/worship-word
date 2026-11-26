@@ -1,0 +1,20 @@
+flowchart LR
+	Index["index.astro"] -->|"configuraciones de salas registradas"| Juego["Juego.astro"]
+	Juego -->|"crearSala(configuracion)"| Mundo
+	Mundo -->|"listarSalas()"| Lista["Salas registradas"]
+	Lista -->|"un botón por sala"| Navegacion["Navegación"]
+	Navegacion -->|"seleccionar sala"| Escena["EscenaSala"]
+	Escena -->|"cambiarSala(sala)"| Renderizador["RepresentadorSala"]
+	Renderizador -->|"dibuja"| Escenario["EscenarioSala"]
+	Escena -->|"calcula zoom y centra"| Camara["Cámara Phaser"]
+	Viewport["Resize del contenedor"] -->|"Phaser.Scale.RESIZE"| Escena
+	Juego -->|"una única instancia"| Phaser["Phaser.Game"]
+	Phaser --> Escena
+
+	classDef interfaz fill:#dce7f3,stroke:#517ba3,color:#203047
+	classDef modelo fill:#dcebe1,stroke:#315a4b,color:#203533
+	classDef grafico fill:#fff0d4,stroke:#bd8a42,color:#332a1b
+
+	class Index,Juego,Navegacion,Viewport interfaz
+	class Mundo,Lista modelo
+	class Escena,Renderizador,Escenario,Camara,Phaser grafico

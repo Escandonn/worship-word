@@ -1,12 +1,19 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import MenuInicio from "../interfaz/MenuInicio.astro";
+import Juego from "../interfaz/Juego.astro";
 import { Mundo } from "../motor/nucleo/Mundo";
 
 const mundo = new Mundo("WORSHIP WORLD");
 
 mundo.crearSala({
-	nombre: "Avenida principal",
+	nombre: "Calle principal",
+	tipo: "calle",
+	ancho: 12,
+	profundidad: 8,
+});
+
+mundo.crearSala({
+	nombre: "Intersección central",
 	tipo: "calle",
 	ancho: 20,
 	profundidad: 15,
@@ -20,9 +27,20 @@ mundo.crearSala({
 	categoria: "ropa",
 });
 
-const salas = mundo.listarSalas().map((sala) => sala.obtenerInformacion());
+const configuracionesSalas = mundo.listarSalas().map((sala) => {
+	const informacion = sala.obtenerInformacion();
+	return {
+		nombre: informacion.nombre,
+		tipo: informacion.tipo,
+		ancho: informacion.ancho,
+		profundidad: informacion.profundidad,
+		...(informacion.categoria
+			? { categoria: informacion.categoria }
+			: {}),
+	};
+});
 ---
 
 <Layout>
-	<MenuInicio salas={salas} />
+	<Juego configuraciones={configuracionesSalas} />
 </Layout>

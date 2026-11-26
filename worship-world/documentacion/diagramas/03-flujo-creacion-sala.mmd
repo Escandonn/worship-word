@@ -1,0 +1,23 @@
+flowchart TD
+	Inicio["Solicitar Mundo.crearSala(configuracion)"] --> Validar["Mundo valida nombre y dimensiones positivas"]
+	Validar --> Identificar["Generar identificador"]
+	Identificar --> Tipo{"Tipo de sala"}
+	Tipo -->|"calle"| CrearCalle["Crear SalaCalle"]
+	Tipo -->|"tienda"| CrearTienda["Crear SalaTienda"]
+	Tipo -->|"desconocido"| ErrorTipo["Lanzar error de tipo desconocido"]
+	CrearCalle --> Inicializar["Sala.inicializar()"]
+	CrearTienda --> Inicializar
+	Inicializar --> Dimensiones{"Dimensiones enteras positivas"}
+	Dimensiones -->|"no"| ErrorDimensiones["EscenarioSala lanza error; Mundo no registra"]
+	Dimensiones -->|"sí"| CrearEscenario["Sala crea EscenarioSala con Cuadricula y Suelo"]
+	CrearEscenario --> IniciarEscenario["EscenarioSala.inicializar()"]
+	IniciarEscenario --> Generar["generarEscenario()"]
+	Generar --> Suelo["Suelo.generarBaldosas(clasificador)"]
+	Suelo --> Baldosas["Crear una Baldosa por celda"]
+	Baldosas --> Distribucion{"Distribución"}
+	Distribucion -->|"cruz"| Clasificar["Clasificar calzada, acera y exterior"]
+	Distribucion -->|"rectangular"| Paredes["Crear cuatro Pared perimetrales"]
+	Clasificar --> SinParedes["Dejar abiertas las cuatro salidas"]
+	Paredes --> Registrar["Mundo registra la sala inicializada"]
+	SinParedes --> Registrar
+	Registrar --> Devolver["Devolver instancia de Sala"]

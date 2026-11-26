@@ -1,11 +1,14 @@
 ---
 import type { InformacionSala } from "../motor/tipos/ConfiguracionSala";
+import type { Sala } from "../motor/salas/Sala";
+import Juego from "./Juego.astro";
 
 interface Propiedades {
 	salas: InformacionSala[];
+	salaDemostracion: Sala;
 }
 
-const { salas }: Propiedades = Astro.props;
+const { salas, salaDemostracion }: Propiedades = Astro.props;
 ---
 
 <div class="inicio">
@@ -143,6 +146,8 @@ const { salas }: Propiedades = Astro.props;
 				</div>
 			</div>
 		</section>
+
+		<Juego sala={salaDemostracion} />
 
 		<section class="lugares" id="lugares">
 			<div class="seccion__encabezado">

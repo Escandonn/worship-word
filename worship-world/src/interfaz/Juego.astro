@@ -1,0 +1,382 @@
+---
+import type { ConfiguracionSala } from "../motor/tipos/ConfiguracionSala";
+
+interface Propiedades {
+	configuraciones: ConfiguracionSala[];
+}
+
+const { configuraciones }: Propiedades = Astro.props;
+---
+
+<main
+	class="mundo"
+	data-juego-mundo
+	data-configuraciones={JSON.stringify(configuraciones)}
+>
+	<aside class="salas" aria-label="Navegación de salas">
+		<div class="salas__encabezado">
+			<p class="salas__etiqueta">WORSHIP WORLD</p>
+			<h1>Explora Tuluá</h1>
+			<p class="salas__descripcion">Selecciona un lugar para visitarlo.</p>
+		</div>
+		<nav class="salas__navegacion" aria-label="Salas disponibles" data-lista-salas>
+		</nav>
+		<p class="salas__detalle" data-detalle-sala aria-live="polite"></p>
+	</aside>
+	<section class="visor" aria-label="Representación de la sala seleccionada">
+		<div class="visor__escenario" data-contenedor-phaser></div>
+	</section>
+</main>
+
+<script>
+	import Phaser from "phaser";
+	import { Mundo } from "../motor/nucleo/Mundo";
+	import { EscenaSala } from "./EscenaSala";
+	import type { ConfiguracionSala } from "../motor/tipos/ConfiguracionSala";
+	import type { Sala } from "../motor/salas/Sala";
+
+	const juegosMontados = new Map<HTMLElement, Phaser.Game>();
+
+	function crearBotonSala(
+		sala: Sala,
+		alSeleccionar: (sala: Sala) => void,
+	): HTMLButtonElement {
+		const boton = document.createElement("button");
+		boton.className = "salas__boton";
+		boton.type = "button";
+		boton.dataset.salaId = sala.id;
+		boton.setAttribute("aria-pressed", "false");
+
+		const nombre = document.createElement("span");
+		nombre.className = "salas__nombre";
+		nombre.textContent = sala.nombre;
+
+		const tipo = document.createElement("span");
+		tipo.className = "salas__tipo";
+		tipo.textContent = sala.tipo;
+
+		boton.append(nombre, tipo);
+		boton.addEventListener("click", () => alSeleccionar(sala));
+		return boton;
+	}
+
+	function montarMundos(): void {
+		const contenedores = document.querySelectorAll<HTMLElement>(
+			"[data-juego-mundo]",
+		);
+
+		for (const contenedor of contenedores) {
+			if (juegosMontados.has(contenedor)) {
+				continue;
+			}
+
+			try {
+				const elementoSalas = contenedor.querySelector<HTMLElement>(
+					"[data-lista-salas]",
+				);
+				const elementoDetalle = contenedor.querySelector<HTMLElement>(
+					"[data-detalle-sala]",
+				);
+				const contenedorPhaser = contenedor.querySelector<HTMLElement>(
+					"[data-contenedor-phaser]",
+				);
+				const configuracionSerializada =
+					contenedor.dataset.configuraciones;
+
+				if (
+					!elementoSalas ||
+					!elementoDetalle ||
+					!contenedorPhaser ||
+					!configuracionSerializada
+				) {
+					throw new Error("Falta la configuración de navegación del mundo.");
+				}
+
+				const configuraciones: ConfiguracionSala[] = JSON.parse(
+					configuracionSerializada,
+				);
+				const mundo = new Mundo("WORSHIP WORLD");
+				for (const configuracion of configuraciones) {
+					mundo.crearSala(configuracion);
+				}
+
+				const salas = mundo.listarSalas();
+				if (salas.length === 0) {
+					throw new Error("El mundo no tiene salas para mostrar.");
+				}
+
+				let salaSeleccionada = salas[0];
+				const botones = new Map<string, HTMLButtonElement>();
+				let escena: EscenaSala;
+
+				const actualizarSeleccion = (sala: Sala): void => {
+					salaSeleccionada = sala;
+					escena.cambiarSala(sala);
+					elementoDetalle.textContent =
+						`${sala.nombre} · ${sala.tipo} · ` +
+						`${sala.ancho} × ${sala.profundidad} baldosas`;
+
+					for (const [identificador, boton] of botones) {
+						const seleccionado = identificador === sala.id;
+						boton.setAttribute(
+							"aria-pressed",
+							seleccionado ? "true" : "false",
+						);
+					}
+
+					contenedor.dataset.salaSeleccionada = sala.id;
+				};
+
+				for (const sala of salas) {
+					const boton = crearBotonSala(sala, actualizarSeleccion);
+					botones.set(sala.id, boton);
+					elementoSalas.append(boton);
+				}
+
+				escena = new EscenaSala(salaSeleccionada);
+				actualizarSeleccion(salaSeleccionada);
+				const juego = new Phaser.Game({
+					type: Phaser.AUTO,
+					parent: contenedorPhaser,
+					width: 1024,
+					height: 768,
+					backgroundColor: "#dce9df",
+					scene: [escena],
+					scale: {
+						mode: Phaser.Scale.RESIZE,
+						autoCenter: Phaser.Scale.CENTER_BOTH,
+					},
+					render: {
+						antialias: true,
+						pixelArt: false,
+					},
+				});
+
+				juegosMontados.set(contenedor, juego);
+				contenedor.dataset.montado = "true";
+			} catch (error) {
+				const detalle =
+					error instanceof Error
+						? error.message
+						: "Error inesperado al preparar el mundo.";
+				contenedor.dataset.error = "true";
+				contenedor.textContent = `No se pudo iniciar WORSHIP WORLD: ${detalle}`;
+				console.error("Error al iniciar el mundo WORSHIP WORLD.", error);
+			}
+		}
+	}
+
+	function desmontarMundos(): void {
+		for (const [contenedor, juego] of juegosMontados) {
+			juego.destroy(true);
+			contenedor.replaceChildren();
+			delete contenedor.dataset.montado;
+			delete contenedor.dataset.salaSeleccionada;
+		}
+
+		juegosMontados.clear();
+	}
+
+	montarMundos();
+	document.addEventListener("astro:page-load", montarMundos);
+	document.addEventListener("astro:before-swap", desmontarMundos);
+	window.addEventListener("pagehide", desmontarMundos);
+	window.addEventListener("pageshow", montarMundos);
+</script>
+
+<style>
+	.mundo {
+		width: 100%;
+		height: 100dvh;
+		min-height: 480px;
+		display: grid;
+		grid-template-columns: minmax(230px, 280px) minmax(0, 1fr);
+		overflow: hidden;
+		background: #dce9df;
+	}
+
+	.salas {
+		z-index: 1;
+		display: flex;
+		flex-direction: column;
+		gap: 22px;
+		min-height: 0;
+		padding: 30px 20px;
+		overflow-y: auto;
+		border-right: 1px solid rgba(32, 53, 51, 0.12);
+		background: #f7f5eb;
+		box-shadow: 8px 0 32px rgba(32, 53, 51, 0.08);
+	}
+
+	.salas__encabezado {
+		padding: 0 5px;
+	}
+
+	.salas__etiqueta {
+		margin: 0 0 10px;
+		color: #315a4b;
+		font-size: 10px;
+		font-weight: 900;
+		letter-spacing: 0.15em;
+	}
+
+	.salas h1 {
+		margin: 0;
+		color: #203533;
+		font-size: clamp(23px, 2.4vw, 30px);
+		font-weight: 900;
+		letter-spacing: -0.05em;
+	}
+
+	.salas__descripcion {
+		margin: 8px 0 0;
+		color: #68756e;
+		font-size: 13px;
+		line-height: 1.5;
+	}
+
+	.salas__navegacion {
+		display: grid;
+		gap: 9px;
+	}
+
+	.salas__boton {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 12px;
+		width: 100%;
+		padding: 13px 14px;
+		border: 1px solid rgba(49, 90, 75, 0.15);
+		border-radius: 12px;
+		background: #fffefa;
+		color: #203533;
+		cursor: pointer;
+		text-align: left;
+		transition:
+			background-color 140ms ease,
+			border-color 140ms ease,
+			transform 140ms ease;
+	}
+
+	.salas__boton:hover {
+		transform: translateY(-1px);
+		border-color: #527d65;
+	}
+
+	.salas__boton[aria-pressed="true"] {
+		border-color: #315a4b;
+		background: #315a4b;
+		color: #fffefa;
+		box-shadow: 0 6px 16px rgba(49, 90, 75, 0.18);
+	}
+
+	.salas__nombre {
+		overflow: hidden;
+		font-size: 13px;
+		font-weight: 800;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.salas__tipo {
+		flex: 0 0 auto;
+		font-size: 10px;
+		font-weight: 700;
+		text-transform: capitalize;
+		opacity: 0.75;
+	}
+
+	.salas__detalle {
+		margin: auto 5px 0;
+		color: #68756e;
+		font-size: 11px;
+		font-weight: 700;
+		line-height: 1.5;
+	}
+
+	.visor {
+		position: relative;
+		min-width: 0;
+		min-height: 0;
+		overflow: hidden;
+		background:
+			radial-gradient(ellipse at 50% 42%, #edf2e7 0%, #dce9df 72%);
+	}
+
+	.visor__escenario {
+		position: absolute;
+		inset: 0;
+		overflow: hidden;
+	}
+
+	.visor__escenario :global(canvas) {
+		display: block;
+		width: 100% !important;
+		height: 100% !important;
+	}
+
+	.mundo[data-error="true"] {
+		display: grid;
+		place-items: center;
+		padding: 24px;
+		color: #8b3c32;
+		font-size: 14px;
+		text-align: center;
+	}
+
+	@media (max-width: 680px) {
+		.mundo {
+			grid-template-columns: minmax(0, 1fr);
+			grid-template-rows: auto minmax(0, 1fr);
+		}
+
+		.salas {
+			gap: 13px;
+			padding: 15px 16px 12px;
+			border-right: 0;
+			border-bottom: 1px solid rgba(32, 53, 51, 0.12);
+		}
+
+		.salas__encabezado {
+			display: grid;
+			grid-template-columns: 1fr auto;
+			align-items: baseline;
+			column-gap: 12px;
+		}
+
+		.salas__etiqueta {
+			grid-column: 1 / -1;
+			margin-bottom: 4px;
+			font-size: 9px;
+		}
+
+		.salas h1 {
+			font-size: 21px;
+		}
+
+		.salas__descripcion {
+			margin: 0;
+			font-size: 11px;
+		}
+
+		.salas__navegacion {
+			display: flex;
+			gap: 8px;
+			overflow-x: auto;
+			padding: 2px 1px 5px;
+		}
+
+		.salas__boton {
+			flex: 0 0 auto;
+			width: auto;
+			min-width: 155px;
+			padding: 10px 12px;
+		}
+
+		.salas__detalle {
+			margin: 0 2px;
+			font-size: 10px;
+		}
+	}
+</style>

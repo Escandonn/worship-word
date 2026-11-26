@@ -1,3 +1,5 @@
+import type { InformacionEscenario } from "./EstructuraEspacial";
+
 export type TipoSala = "calle" | "tienda";
 
 export type CategoriaTienda = "ropa" | "alimentos" | "vehiculos";
@@ -18,5 +20,6 @@ export interface InformacionSala {
 	tipo: TipoSala;
 	jugadores: number;
 	elementos: number;
+	escenario?: InformacionEscenario;
 	categoria?: CategoriaTienda;
 }

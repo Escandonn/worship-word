@@ -1,0 +1,29 @@
+flowchart LR
+	Pagina["index.astro"] -->|"serializa configuraciones"| JuegoAstro["Juego.astro"]
+	JuegoAstro -->|"reconstruye con crearSala()"| Mundo
+	Mundo -->|"listarSalas()"| Navegacion["Botones dinámicos"]
+	Mundo -->|"registra"| Sala
+	Sala -->|"herencia"| SalaCalle
+	Sala -->|"herencia"| SalaTienda
+	Sala -->|"inicializar()"| EscenarioSala
+	JuegoAstro -->|"una instancia Phaser.Game"| EscenaSala["EscenaSala (Phaser.Scene)"]
+	Navegacion -->|"cambia la sala"| EscenaSala
+	EscenaSala -->|"obtiene"| Sala
+	EscenaSala -->|"crea"| RepresentadorSala
+	RepresentadorSala -->|"dibuja"| EscenarioSala
+	EscenarioSala -->|"proyecta coordenadas"| CuadriculaIsometrica
+	EscenarioSala -->|"genera según ancho y profundidad"| Suelo
+	EscenarioSala -->|"rectangular: cuatro límites"| Pared
+	Suelo -->|"crea y administra"| Baldosa
+	EscenaSala -->|"redimensiona y centra cámara"| Viewport["Viewport Phaser"]
+	EscenarioSala -->|"calle: clasifica en cruz"| Baldosa
+
+	classDef administrador fill:#dcebe1,stroke:#315a4b,color:#203533
+	classDef espacial fill:#fff0d4,stroke:#bd8a42,color:#332a1b
+	classDef sala fill:#f9dfd4,stroke:#c56d52,color:#38251f
+	classDef renderizador fill:#dce7f3,stroke:#517ba3,color:#203047
+
+	class Mundo administrador
+	class Pagina,JuegoAstro,Navegacion,EscenaSala,RepresentadorSala,Viewport renderizador
+	class Sala,SalaCalle,SalaTienda sala
+	class EscenarioSala,CuadriculaIsometrica,Suelo,Baldosa,Pared espacial
